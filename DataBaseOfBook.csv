@@ -1,0 +1,11 @@
+id,name,priceD,priceWD,numOfFollowers,old,student
+123,Book1,100,90,150,y,y
+228,Book2,200,180,250,y,y
+3,Book3,150,135,300,n,y5
+5,NELOL,255,160,200,n,y
+228,Book2,200,180,250,y,y
+123,Book1,100,90,150,y,y
+228,Book2,200,180,250,y,y
+3,Book3,150,135,300,n,y
+122,Hello,200,150,1,y,n
+1234,prikol,22,123,4,y,y
