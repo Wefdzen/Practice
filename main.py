@@ -9,27 +9,29 @@ import pandas as pd
 root = Tk() #window
 
 def append_to_file():
-    window1 = Toplevel(root)
+    window1 = Toplevel(root) # Создаем новое окно
     window1.title("APPEND")
     window1.geometry("450x350")
 
     data = ["id", "name", "priceD", "priceWD", "numOfFollowers", "old", "student"]
-    temp_data = [""] * len(data)
+    temp_data = [""] * len(data)# Хранение временных данных для всех полей
+
 
     def get_message(index):
-        temp_data[index] = entry.get()
-        temp_label["text"] = temp_data[index]
-        entry.delete(0, END)
+        temp_data[index] = entry.get()  # Сохранение введенных данных
+        temp_label["text"] = temp_data[index]# Обновление метки
+        entry.delete(0, END) # Очистка поля ввода
 
         if index < len(data) - 1:
-            entry_label["text"] = f"Enter {data[index + 1]}:"
-            btn.config(command=lambda: get_message(index + 1))
+            entry_label["text"] = f"Enter {data[index + 1]}:"# Обновление метки для следующего ввода
+            btn.config(command=lambda: get_message(index + 1)) # Обновление команды кнопки
         else:
+            # Запись данных в файл после ввода всех полей
             with open("DataBaseOfBook.csv", "a", encoding='utf8', newline='') as f:
                 writer = csv.writer(f)
                 writer.writerow(temp_data)
             temp_label["text"] = "Data saved!"
-            window1.after(2000, window1.destroy)
+            window1.after(2000, window1.destroy) # Закрытие окна
 
     entry_label = ttk.Label(window1, text=f"Enter {data[0]}:")
     entry_label.place(x=10, y=10, width=150, height=30)
@@ -37,8 +39,8 @@ def append_to_file():
     entry = ttk.Entry(window1)  
     entry.place(x=10, y=40, width=200, height=30)
 
-    btn = ttk.Button(window1, text="Next", command=lambda: get_message(0))
-    btn.place(x=10, y=80, width=100, height=30) 
+    btn = ttk.Button(window1, text="Next", command=lambda: get_message(0))  # Кнопка для ввода первого поля
+    btn.place(x=10, y=80, width=100, height=30)  
 
     temp_label = ttk.Label(window1)
     temp_label.place(x=10, y=120, width=200, height=30)
@@ -60,7 +62,7 @@ def delete_from_file():
         os.remove("DataBaseOfBook.csv")
         os.rename("DataBaseOfBooked.csv", "DataBaseOfBook.csv")
         temp_label["text"] = "Data deleted!"
-        window1.after(2000, window1.destroy)
+        window1.after(2000, window1.destroy) # Закрытие окна через 2 секунды
 
     def get_value_for_delete():
         value_for_delete = delete_option.get()
@@ -174,7 +176,7 @@ def search_in_file():
 
     window1 = Toplevel(root)
     window1.title("Search")
-    window1.geometry("600x400")
+    window1.geometry("800x400")
 
     ttk.Label(window1, text="Enter which setting you want to search (1.id/2.name/3.priceD/4.priceWD/5.numOfFoll/6.oldDiscount/7.studentDiscount/8.all_base):").place(x=10, y=10)
     search_option = StringVar(value="1")
@@ -184,7 +186,7 @@ def search_in_file():
     entry = ttk.Entry(window1)
     entry.place(x=10, y=80, width=200, height=30)
 
-    ttk.Label(window1, text="Comparison for priceD/priceWD/numOfFoll (1.=  2.>=  3<=):").place(x=10, y=110)
+    ttk.Label(window1, text="Settings only for priceD/priceWD/numOfFoll (1.=  2.>=  3<=):").place(x=10, y=110)
     comparison_option = StringVar(value="1")
     ttk.Combobox(window1, textvariable=comparison_option, values=[1, 2, 3]).place(x=10, y=130)
 
@@ -280,13 +282,13 @@ def show_statistics():
             # Построение гистограммы
             old_student_not_counts.plot(kind='bar', color='skyblue')
             
-            plt.title('Distribution of Generations')
-            plt.xlabel('Category')
-            plt.ylabel('Count')
+            plt.title('Распределение поколений')
+            plt.xlabel('Категория')
+            plt.ylabel('Счет')
             
             # Установка меток оси X
             ticks = range(len(old_student_not_counts))
-            labels = ['Old Generation', 'Students', 'Others']
+            labels = ['Old поколение', 'Студенты', 'Остальные']
             plt.xticks(ticks, labels, rotation=0)
             
             plt.tight_layout()
@@ -305,7 +307,7 @@ def show_statistics():
             # Построение круговой диаграммы
             delivery_counts.plot(kind='pie', autopct='%1.1f%%', startangle=90, colors=['lightblue', 'lightgreen'])
             
-            plt.title('Distribution of Delivery Services')
+            plt.title('Распределение услуг по доставке')
             plt.ylabel('')
             plt.show()
         #функция для вывода книг и кол-во их подписчиков
@@ -322,21 +324,21 @@ def show_statistics():
             # Построение столбчатой диаграммы
             followers_per_book.plot(kind='bar', color='lightgreen', edgecolor='black')
             
-            plt.title('Number of Followers per Book')
-            plt.xlabel('Book Name')
-            plt.ylabel('Number of Followers')
+            plt.title('Количество подписчиков на книгу')
+            plt.xlabel('Название книг')
+            plt.ylabel('Кол-во подписчиков')
             plt.xticks(rotation=45)
             plt.tight_layout()
             plt.show()
 
         #output button to window1
-        btn_popular_editions = ttk.Button(window1, text="Most Popular Editions", command=plot_popular_editions)
+        btn_popular_editions = ttk.Button(window1, text="Распределение поколений", command=plot_popular_editions)
         btn_popular_editions.place(x=10, y=10, width=200, height=30)
 
-        btn_services_distribution = ttk.Button(window1, text="Services Distribution", command=plot_services_distribution)
+        btn_services_distribution = ttk.Button(window1, text="Распределение услуг по доставке", command=plot_services_distribution)
         btn_services_distribution.place(x=10, y=50, width=200, height=30)
 
-        btn_followers_histogram = ttk.Button(window1, text="Followers Histogram", command=plot_followers_histogram)
+        btn_followers_histogram = ttk.Button(window1, text="Кол-во подписчиков на книгу", command=plot_followers_histogram)
         btn_followers_histogram.place(x=10, y=90, width=200, height=30)
     
     except FileNotFoundError:
@@ -374,19 +376,19 @@ canvas.create_image(x_center, y_center, anchor=NW, image=just_photo)
 canvas.pack()
 
 # BUTTONS
-btn_add_DataBase = ttk.Button(text="Add", command=append_to_file)
+btn_add_DataBase = ttk.Button(text="Добавить запись в бд", command=append_to_file)
 btn_add_DataBase.place(x=10, y=100, width=200, height=125)
 
-btn_del_DataBase = ttk.Button(text="Del", command=delete_from_file)
+btn_del_DataBase = ttk.Button(text="Удалить запись из бд", command=delete_from_file)
 btn_del_DataBase.place(x=350, y=100, width=200, height=125)    
 
-btn_search_DataBase = ttk.Button(text="Search", command=search_in_file)
+btn_search_DataBase = ttk.Button(text="Поиск записи в бд", command=search_in_file)
 btn_search_DataBase.place(x=10, y=310, width=200, height=125)
 
-btn_change_DataBase = ttk.Button(text="Change", command=update_record)
+btn_change_DataBase = ttk.Button(text="Изменить запись в бд", command=update_record)
 btn_change_DataBase.place(x=350, y=310, width=200, height=125)  
 
-btn_statistics = ttk.Button(text="Statistics", command=show_statistics)
+btn_statistics = ttk.Button(text="Статистики", command=show_statistics)
 btn_statistics.place(x=700, y=100, width=200, height=125)
 
 root.mainloop()
